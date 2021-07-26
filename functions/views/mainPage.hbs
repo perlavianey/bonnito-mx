@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-171525133-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-171525133-1');
+    </script>
+    <meta charset="UTF-8">
+    <meta property="og:image" content="https://bonnito-mx.web.app/triangleB_page.jpeg"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://bonnito-mx.web.app/main"/>
+    <meta property="og:title" content="Bonni-to MX" />
+    <meta property="og:description" content="Separadores bonitos hechos a mano. ¡No te quedes sin el tuyo!"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-site-verification" content="nV_UYUaCA1JJNUe92Y5OsUGMzOYkFe1Qc5pY5-96YlQ" />
+    <title>Bonni-to MX</title>	
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2Ffavicon.ico?alt=media?v=3" type="image/x-icon"/>
+    <link rel="stylesheet" href="/styles.css?v=4">
+    <script src="https://kit.fontawesome.com/646c2ab23a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="fb-root"></div>
+    {{!-- <div id="mex" class="sticky">
+        <div></div>
+        <div></div>
+        <div></div> 
+    </div>  --}}
+    {{!-- <div id="orgullo" class="sticky"></div> --}}
+    <span id="hamburguer">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+    </span>
+    <div class="media">
+        <a href="https://www.facebook.com/Bonnitomx/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/bonnito.mx/?hl=es-la" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+    <section id="portada"></section>
+    <section id="menu">
+        <div><a href="https://bonnito-mx.web.app/main">Inicio</a></div>
+        <div><a href="https://bonnito-mx.web.app/about.html">Sobre nosotros</a></div>
+        <div><a href="https://bonnito-mx.web.app/categories">Categorías</a></div>
+        <div><a href="https://bonnito-mx.web.app/puntos-venta.html">Puntos de Venta</a></div>
+        <div><a href="https://bonnito-mx.web.app/events.html">Eventos</a></div>
+        <div><a href="https://bonnito-mx.web.app/offer"><img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2FofferTag.png?alt=media" style="height: 35px;"></a></div>
+        <div id="menu-buscador">
+            <form name="searchForm" action="/search">
+                <label class="expandSearch">
+                <input type="text" placeholder="Busca tu separador" name="q">
+                <i class="fas fa-search"></i>
+                </label>
+            </form>
+        </div>
+        <div id="menu-buscador-phone">
+            <a href="https://bonnito-mx.web.app/search">Buscador</a>
+        </div>
+    </section>
+    
+    <section id="top-five">
+        <div></div>
+        {{!-- <div><p id="showOfferLink" class="bouncy" onclick="showOfferModal()"><span>Ver promoción</span></p></div> --}}
+        <div id="content-top-five">
+            <h2 class="title" id="top-month">Recomendaciones del mes</h2>
+            <div id="cards-container">
+                {{#each topFive}}
+                    <div class="product-card effect-ruby" onclick="openModal({{@index}},{{json @root}},'topFive')">
+                        <div class="number" style="display: none;">{{inc this.topFivePosition}}</div>
+                        <img style="width:100%; background: transparent url('https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F{{this.category}}%2F{{this.imagePath}}?alt=media') no-repeat right center; background-size:cover " 
+                            class="image-product-top-five"/>
+                        <p class="name-product">{{this.title}}</p> 
+                        <div class="price">{{this.price}}</div> 
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+    <div class="see-more-div">
+        <a class="details-link" href="https://bonnito-mx.web.app/categories">Ver más Separadores</a>
+    </div>
+    
+<section id="decorar">
+        <div></div>
+        {{!-- <div><p id="showOfferLink" class="bouncy" onclick="showOfferModal()"><span>Ver promoción</span></p></div> --}}
+        <div id="content-top-five">
+            <h2 class="title" id="top-month">Para decorar</h2>
+            <div id="cards-container">
+                {{#each decorar}}
+                    <div class="product-card effect-ruby" onclick="openModal({{@index}},{{json @root}},'decorar')">
+                        <div class="number" style="display: none;">{{inc this.decorarPosition}}</div>
+                        <img style="width:100%; background: transparent url('https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2Fdecorar%2F{{this.imagePath}}?alt=media') no-repeat right center; background-size:cover " 
+                            class="image-product-top-five"/>
+                        <p class="name-product">{{this.title}}</p> 
+                        <div class="price">{{this.price}}</div> 
+                    </div>
+                {{/each}}
+            </div>
+        </div> <br><br>
+    </section>
+    <div class="see-more-div">
+        <a class="details-link" href="https://bonnito-mx.web.app/categories/decorar">Ver más para decorar</a>
+    </div>
+
+    <section id="salva">
+        <div id="content-top-five">
+            <h2 class="title" id="top-month">Salva orejas</h2>
+            <div id="cards-container">
+                {{#each ear}}
+                    <div class="product-card effect-ruby" onclick="openModal({{@index}},{{json @root}},'ear')">
+                        <div class="number" style="display: none;">{{inc this.earPosition}}</div>
+                        <img style="width:100%; background: transparent url('https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F{{this.category}}%2F{{this.imagePath}}?alt=media') no-repeat right center; background-size:cover " 
+                            class="image-product-top-five"/>
+                        <p class="name-product">{{this.title}}</p> 
+                        <div class="price">{{this.price}}</div> 
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+    <div class="see-more-div">
+        <a class="details-link" href="https://bonnito-mx.web.app/categories/salvaorejas">Ver más Salva orejas</a>
+    </div>
+    {{!-- <div id="modal-offer" class="modal">
+        <span id="closeOffer" class="close" onclick="closeModal()"><i class="fas fa-times-circle"></i></span>
+        <div class="image-modal-container">
+            <img class="imagen-modal" id="image-offer">
+        </div>
+    </div> --}}
+    <div id="modal" class="modal">
+        <span id="close" class="close" onclick="closeModal()"><i class="fas fa-times-circle"></i></span>
+        <span id="previous" class="previous"><i class="fas fa-arrow-circle-left"></i></span>
+        <span id="next" class="next"><i class="fas fa-arrow-circle-right"></i></span>
+        <div class="image-modal-container">
+            <div id="caption"></div>
+            <input type="checkbox" id="zoomCheck">
+            <label for="zoomCheck"><img id="imagen-modal"></label>
+        </div>
+    </div>
+    
+    <footer id="footer">
+        <div class="column column1-footer">
+            <p>Bonni-to MX</p>
+            <div class="media media-footer">
+                <a href="https://www.facebook.com/Bonnitomx/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/bonnito.mx/?hl=es-la" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="column column2-footer">
+            <p class="title-column"><b>CONTACTO</b></p>
+            <p class="contact-info" href="#"><i class="fas fa-envelope"></i> &nbsp; bonnitomx@gmail.com</p>
+        </div>
+        <div class="column column3-footer">
+            <p class="aviso"><a class="content-footer" href="https://bonnito-mx.web.app/legal.html">Aviso legal</a></p>
+        </div>
+        <div class="column column4-footer">
+            <p class="title-column"><b>ATENCIÓN AL CLIENTE</b></p>
+            <a class="content-footer option-column4" href="https://bonnito-mx.web.app/como-comprar.html">Cómo comprar</a>
+            <a class="content-footer option-column4" href="https://bonnito-mx.web.app/costos-envio.html">Costos de envío</a>
+            <a class="content-footer option-column4" href="https://bonnito-mx.web.app/faq.html">Preguntas frecuentes</a>
+        </div>
+    </footer>
+    
+    <script>
+    let modalOffer = document.getElementById("modal-offer"), modalImgOffer = document.getElementById("image-offer"), showOfferLink = document.getElementById("showOfferLink");
+    
+    showOfferModal = () =>{
+        modalOffer.style.display = "block";
+        modalImgOffer.src = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2Fpromotion.jpeg?alt=media";
+    }
+
+    {{!-- showOfferModal(); --}}
+
+    /*const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const d = new Date();
+
+    let topMonth = document.getElementById("top-month")
+    topMonth.innerText="Top "+ monthNames[d.getMonth()]*/
+    
+    let menuBuscador=document.getElementById("menu-buscador")
+    let menuBuscadorPhone=document.getElementById("menu-buscador-phone")
+    if (navigator.userAgent.match(/Mobile/)){
+        menuBuscador.style.display = "none"
+        menuBuscadorPhone.style.display = "block"
+    }
+
+    let imageModal = document.getElementById("imagen-modal")
+    let caption = document.getElementById("caption")
+
+    openModal = (index,top,type) => {
+        let topFive;
+
+        if(type==="ear") topFive=top.ear
+        else if (type==="decorar") topFive=top.decorar
+        else topFive = top.topFive
+
+        if (navigator.userAgent.match(/Mobile/)){
+            let checkboxZoom = document.getElementById("zoomCheck")
+            checkboxZoom.disabled = true;
+        }
+        
+        let imageModalContainer=document.getElementsByClassName("image-modal-container")[0], modalImg = document.getElementById("imagen-modal");
+        let previous = document.getElementById("previous"),next = document.getElementById("next"), number = document.getElementById('number'),close = document.getElementById("close");
+        
+        modal.style.display = "block";
+        
+            modalImg.src = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F"+topFive[index].category+"%2F"+topFive[index].imagePath+"?alt=media"
+        
+        
+        modalImg.alt = index;
+        caption.innerText = index+1
+
+        previous.onclick = () => {
+            let currentIndex = parseInt(document.getElementById("imagen-modal").alt)
+            currentIndex === 0? currentIndex = topFive.length-1 : currentIndex--
+            modalImg.src = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F"+topFive[currentIndex].category+"%2F"+topFive[currentIndex].imagePath+"?alt=media";
+            modalImg.alt = currentIndex;
+            caption.innerText = currentIndex+1
+        }
+
+        next.onclick = function(){
+            let currentIndex = parseInt(document.getElementById("imagen-modal").alt)
+            currentIndex === (topFive.length-1) ? currentIndex = 0 : currentIndex++
+            modalImg.src = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F"+topFive[currentIndex].category+"%2F"+topFive[currentIndex].imagePath+"?alt=media";
+            modalImg.alt = currentIndex;
+            caption.innerText = currentIndex+1
+        }
+
+        close.onclick = () => closeModal()
+    }
+
+    closeModal = () => {
+        modal.style.display = "none";
+        modalOffer.style.display = "none";
+        let checkboxZoom = document.getElementById("zoomCheck")
+        checkboxZoom.checked = false;
+    }
+
+    if(modal || modalOffer){ //SI HAY MODAL DE OFFER PONER ESTA
+        window.onclick = function(event) {
+            if (event.target == modal || event.target == modalOffer) closeModal();
+        }
+    }
+
+    /*if(modal ){
+        window.onclick = function(event) {
+            if (event.target == modal) closeModal();
+        }
+    }*/
+
+    let hamburguer = document.getElementById("hamburguer");
+    hamburguer.onclick = function(){
+        let menu = document.getElementById("menu");
+        hamburguer.classList.toggle("change");
+        if (menu.style.width === "0" || menu.style.width === ""|| menu.style.width === "0px") {
+            menu.style.width = "200px";
+            hamburguer.style.position = "fixed"
+        } 
+        else if(menu.style.width = "200px"){
+            menu.style.width = "0";
+            hamburguer.style.position = "absolute"
+        }
+    }
+
+    let header = document.getElementById("menu");
+    //let orgullo = document.getElementById("orgullo")
+    //let mex = document.getElementById("mex")
+    let sticky = header.offsetTop-15;
+
+    let fixHeader = ()=> {
+        if (window.outerWidth && window.outerWidth < 577){
+            return
+        }
+        else{
+            if (window.pageYOffset > sticky){
+                //header.style.marginTop="5px"
+                header.classList.add("sticky"); 
+                //orgullo.classList.add("sticky")
+                //mex.classList.add("sticky")
+            } 
+            else {
+                header.style.marginTop="0"
+                header.classList.remove("sticky");
+            }
+        }
+    }
+    window.onscroll = ()=> fixHeader()
+    
+</script>
+</body>
+</html>

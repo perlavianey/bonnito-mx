@@ -1,0 +1,11 @@
+<h1>Seleccione la categoría</h1>
+<div id="categories-container">
+{{#each categories}}
+    <a href="/admin/orderProducts/{{this.identifier}}" class="anchor-category">
+        <div class="category">
+            <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/icons%2F{{this.iconName}}?alt=media" class="icon" style="margin-bottom: 0;" />
+            <div class="name">{{this.name}}</div>
+        </div>    
+    </a>
+{{/each}}
+</div>

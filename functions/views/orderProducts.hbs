@@ -1,0 +1,138 @@
+<section id="orderProducts" class="content">
+    <h2 class="title-page center">Ordenar productos</h2>
+    <div id="results-search" class="searched-products">
+        <ol class="products-list"  id="list">
+        {{#each products}}
+            <li value={{this.id}} position={{this.position}}>{{this.title}}</li>
+        {{/each}} 
+        </ol>
+    </div>
+    <div class="row-save">
+        <input type="submit" class="send-form-button save-order" value="Guardar" onclick="reorder()">
+    </div>
+</section>
+
+<script>
+    let reorder =()=>{
+        let orderedProducts = []
+        let category = window.location.pathname.split("/").pop();
+        var items = document.getElementsByTagName("li");
+        for (var i = 0; i < items.length; ++i) {
+            let product = {
+                id:items[i].attributes.value.nodeValue,
+                newPosition:i
+            }
+            orderedProducts.push(product)
+        } 
+        fetch('http://localhost:9000/admin/saveReorderedProducts', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({orderedProducts}),
+        })
+        .then(response => {
+            console.log(response),
+            window.location = `http://localhost:9000/categories/${category}`;
+        })
+        .then(responseJson => {
+            console.log(responseJson)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    menuBuscador=document.getElementById("menu-buscador")
+    menuBuscadorPhone=document.getElementById("menu-buscador-phone")
+    if (navigator.userAgent.match(/Mobile/)){
+        menuBuscador.style.display = "none"
+        menuBuscadorPhone.style.display = "block"
+    }
+
+    if (!navigator.userAgent.match(/Mobile/)){
+        menuBuscador.style.display = "none"
+    }
+
+    var isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1; //&& ua.indexOf("mobile");
+    if(isAndroid) {
+        document.write('<meta name="viewport" content="width=device-width,height='+window.innerHeight+', initial-scale=1.0">');
+    }
+
+    hamburguer = document.getElementById("hamburguer");
+    hamburguer.onclick = function(){
+        let menu = document.getElementById("menu");
+        hamburguer.classList.toggle("change");
+        if (menu.style.width === "0" || menu.style.width === ""|| menu.style.width === "0px") {
+            menu.style.width = "200px";
+            hamburguer.style.position = "fixed"
+        } 
+        else if(menu.style.width = "200px"){
+            menu.style.width = "0";
+            hamburguer.style.position = "absolute"
+        }
+    }
+
+    header = document.getElementById("menu");
+    sticky = header.offsetTop;
+
+    fixHeader = ()=> {
+        if (window.outerWidth && window.outerWidth < 577) return
+        else{
+            if (window.pageYOffset > sticky) header.classList.add("sticky");
+            else header.classList.remove("sticky");
+        }
+    }
+    window.onscroll = ()=> fixHeader()
+
+    //DRAG AND ORDER
+
+    function sortable(rootEl, onUpdate){
+        var dragEl, nextEl;
+        
+        [].slice.call(rootEl.children).forEach(function (itemEl){
+            itemEl.draggable = true;
+        });
+        
+        function _onDragOver(evt){
+            evt.preventDefault();
+            evt.dataTransfer.dropEffect = 'move';
+        
+            var target = evt.target;
+            if( target && target !== dragEl && target.nodeName == 'LI' ){
+                var rect = target.getBoundingClientRect();
+                var next = (evt.clientY - rect.top)/(rect.bottom - rect.top) > .5;
+                rootEl.insertBefore(dragEl, next && target.nextSibling || target);
+            }
+        }
+        
+        function _onDragEnd(evt){
+            evt.preventDefault();
+        
+            dragEl.classList.remove('ghost');
+            rootEl.removeEventListener('dragover', _onDragOver, false);
+            rootEl.removeEventListener('dragend', _onDragEnd, false);
+
+            if( nextEl !== dragEl.nextSibling ){
+                onUpdate(dragEl);
+            }
+        }
+
+        rootEl.addEventListener('dragstart', function (evt){
+            dragEl = evt.target;
+            nextEl = dragEl.nextSibling;
+            
+            evt.dataTransfer.effectAllowed = 'move';
+            evt.dataTransfer.setData('Text', dragEl.textContent);
+
+            rootEl.addEventListener('dragover', _onDragOver, false);
+            rootEl.addEventListener('dragend', _onDragEnd, false);
+
+            setTimeout(function (){ dragEl.classList.add('ghost') }, 0)
+        }, false);
+    }                                    
+
+sortable( document.getElementById('list'), function (item){});
+
+</script>

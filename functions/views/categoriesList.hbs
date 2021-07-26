@@ -1,0 +1,18 @@
+<section id="categories" class="content">
+    <h2 class="title-page-categories">Categorías</h2>
+    <div id="categories-container">
+        {{#each categories}}
+            <a href="/categories/{{this.identifier}}" class="anchor-category">
+                <div class="category">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/icons%2F{{this.iconName}}?alt=media" 
+                    {{#ifeq this.identifier "colgadores"}} class="icon icon-colgadores"{{/ifeq}} 
+                    {{#ifeq this.identifier "salvaorejas"}} class="icon icon-salvaorejas"{{/ifeq}}
+                    {{#ifeq this.identifier "decorar"}} class="icon icon-decorar"{{/ifeq}} 
+                    {{#ifnoteq this.identifier "colgadores"}} class="icon"{{/ifnoteq}}  
+                    style="margin-bottom: 0;"/>
+                    <div class="name">{{this.name}}</div>
+                </div>    
+            </a>
+        {{/each}}
+    </div>
+</section>

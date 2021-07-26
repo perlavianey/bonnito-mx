@@ -1,0 +1,149 @@
+<div class="loading show">
+    <div class="spin"></div>
+    <div class="magia">Cargando tu próximo separador...</div>
+    <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2Ffavicon.ico?alt=media">
+</div>
+<section id="section-offer" class="section-category">
+    <p class="link-back"><a id="link-back" href="/categories"><i class="fas fa-arrow-left"></i> Ir a categorías</a></p>
+    <h2 class="title-page-categories">Ofertas</h2>
+    <h3 class="center"> ** Piezas únicas ** </h3>
+    <h5 class="center"> * Última oportunidad  *</h5>
+    <div id="cards-container" class="products">
+        {{#each products}}
+            <div class="product effect-ruby" onclick="openModal(&quot;{{this.category}}&quot;,&quot;{{this.imagePath}}&quot;,&quot;{{this.doble}}&quot;,&quot;{{this.url2}}&quot;)">
+                {{#if this.soldOut}}
+                    <img class="img-soldout" src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2Fequis.png?alt=media">
+                {{/if}}
+                <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2FofferTag.png?alt=media" class="offerTag">
+                <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2FOferta%2F{{this.imagePath}}?alt=media" {{#if this.soldOut}}class="image-product product-sold-out"{{else}}class="image-product"{{/if}}/>
+                <p class="name-product">{{this.title}}</p> 
+                <div class="priceOffer">{{this.price}}</div> 
+                <div class="stock">Piezas disponibles: <span class="stock-number">{{this.stock}}</span></div> 
+                {{#if this.colors}}
+                    <div class="colors"> 
+                        <div class="available-colors-title">Disponible también en colores</div>
+                        <div class="colors-list">
+                            {{#each this.colors}}
+                                <div class="color-variant" style="background-color: {{this}};"></div>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+</section>
+<div id="modal" class="modal">
+    <span id="previous" class="previous control" style="display: none;"><i class="fas fa-arrow-circle-left"></i></span>
+    <span id="frente" style="display: none;">Frente</span>
+    <span id="next" class="next control" style="display: none;"><i class="fas fa-arrow-circle-right"></i></span>
+    <span id="reverso" style="display: none;">Reverso</span>
+    <span id="close" class="close" onclick="closeModal(&quot;{{@root.data.identifier}}&quot;)"><i class="fas fa-times-circle"></i> </span>
+    <div class="image-modal-container">
+        <input type="checkbox" id="zoomCheck">
+        <label for="zoomCheck">
+            <img id="imagen-modal">
+        </label>
+    </div>
+</div>
+
+
+<script>
+    let Loading = (loadingDelayHidden = 0) => {
+        let loading = null;
+        const myLoadingDelayHidden = loadingDelayHidden;// Retardo para borrar
+        let imgs = [];// Imágenes
+        let lenImgs = 0, counterImgsLoading = 0;
+
+        function incrementCounterImgs() {
+            counterImgsLoading += 1;
+            if (counterImgsLoading === lenImgs-1) hideLoading();
+        }
+
+        function hideLoading() {
+            if(loading !== null) {
+                loading.classList.remove('show');
+                setTimeout(function () {
+                    loading.remove();
+                }, myLoadingDelayHidden);
+            }
+        }
+
+        function init() {
+            setTimeout(function(){ hideLoading() }, 2500);
+            document.addEventListener('DOMContentLoaded', function () {
+                loading = document.querySelector('.loading');
+                imgs = Array.from(document.images);
+                lenImgs = imgs.length;
+                if(imgs.length === 0) hideLoading();
+                else imgs.forEach(function (img) {
+                        img.addEventListener('load', incrementCounterImgs, false);
+                    });
+            });
+        }
+        return { 'init': init }
+    }
+
+    Loading(500).init();
+
+    let imageModal = document.getElementById("imagen-modal");
+
+    openModal = (category,imagePath,doble,secondImagePath) => {
+        if (navigator.userAgent.match(/Mobile/)){
+            let checkboxZoom = document.getElementById("zoomCheck")
+            checkboxZoom.disabled = true;
+        }
+        
+        let imageModalContainer=document.getElementsByClassName("image-modal-container")[0], modalImg = document.getElementById("imagen-modal");
+        let previous = document.getElementById("previous"),frente = document.getElementById("frente"),reverso = document.getElementById("reverso"),next = document.getElementById("next")
+        modal.style.display = "block";
+        modalImg.src = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2FOferta%2F"+imagePath+"?alt=media"
+
+        if(doble === "true"){ //only if the product has two images
+            next.style.display="block";
+            reverso.style.display="block";
+            next.onclick =()=> toggle(imagePath,secondImagePath)
+            previous.onclick =()=> toggle(imagePath,secondImagePath)
+        }
+
+        else { 
+            previous.style.display="none";
+            next.style.display="none"
+        }
+            
+        toggle = (image1, image2) => {
+            let imageOne = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2FOferta%2F"+image1+"?alt=media"
+            let imageTwo = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2FOferta%2F"+image2+"?alt=media"
+            modalImg.src === imageOne ? (
+                modalImg.src = imageTwo,
+                next.style.display="none",
+                reverso.style.display="none",
+                previous.style.display="block",
+                frente.style.display="block")
+            : (modalImg.src = imageOne,
+                next.style.display="block",
+                reverso.style.display="block",
+                previous.style.display="none",
+                frente.style.display="none")
+        }
+    }
+
+    closeModal = () => {
+        next.style.display="none"
+        reverso.style.display="none"
+        previous.style.display="none"
+        frente.style.display="none" 
+        imageModal.src="";
+        modal.style.display = "none";
+        let checkboxZoom = document.getElementById("zoomCheck")
+        checkboxZoom.checked = false;
+    }
+
+    if(modal){
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    }
+</script>

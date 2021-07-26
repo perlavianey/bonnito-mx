@@ -1,0 +1,31 @@
+<meta name="google-signin-client_id" content="441065807559-jo9ip2rtudn8kspfph5gedhv3d9n1onv.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script> 
+
+
+<h1>Panel de administrador</h1>
+
+<a href="http://localhost:9000/admin/add_product">Agregar producto</a>
+<a href="#">Editar producto</a>
+<a href="http://localhost:9000/admin/categories">Ordenar productos</a>
+<a href="#">Agregar Evento</a>
+
+
+<a href="#" onclick="signOut();">Sign out</a>
+<script>
+    function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+    }
+
+    function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      window.location = `http://localhost:9000/main`;
+    }
+
+    
+</script>
+

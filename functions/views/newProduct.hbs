@@ -1,0 +1,56 @@
+<section id="newProduct" class="content">
+    <h2 class="title-page-categories">Agregar nuevo producto</h2>
+    <div class="form-container">
+        <form method="POST" action="/admin/sendProduct" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-25">
+                    <label for="title" class="label-form">Título</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="title" name="title" class="input-form" placeholder="Título visible al público">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="lname" class="label-form">Precio</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="price" name="price" class="input-form" placeholder="Precio del producto">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="category" class="label-form">Categoría</label>
+                </div>
+                <div class="col-75">
+                    <select id="category" name="category">
+                    <option>Seleccione la categoría del producto</option>
+                            {{#each categories}}
+                                <option value={{jsonScape this.identifier}}>{{this.name}}</option>
+                            {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="searchCriteria" class="label-form">Criterios de búsqueda</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="searchCriteria" name="searchCriteria" class="input-form" placeholder="Criterios de búsqueda separados por coma">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label for="imagePath" class="label-form">Imagen</label>
+                </div>
+                <div class="col-75">
+                    <input type="file" id="imagePath" name="imagePath" class="input-form" accept="image/*">
+                    {{!-- <input type="text" id="imagePath" name="imagePath" class="input-form" placeholder="Nombre de la imagen real"> --}}
+                </div>
+            </div>
+            <div class="row">
+                <input type="submit" class="send-form-button"value="Guardar">
+            </div>
+        </form>
+    </div>
+</section>

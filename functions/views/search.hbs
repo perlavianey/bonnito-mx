@@ -1,0 +1,182 @@
+<div class="loading show">
+    <div class="spin"></div>
+    <div class="magia">Buscando tu próximo separador...</div>
+    <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/generals%2Ffavicon.ico?alt=media">
+</div>
+<section id="search" class="content">
+    <h2 class="title-page center">Buscar</h2>
+    <div id="search-container" class="center">
+        <form name="searchForm" action="/search">
+            <input id="search-field" type="text" name="q" size="200" placeholder="Introduce criterio de búsqueda"/>
+            <button type="submit" formaction="/search" class="button-search"><i class="fas fa-search"></i></button>
+        </form> 
+    </div>
+    <div id="results-search" class="searched-products">
+        {{#checklength qOriginal}}
+            <div class="center results-title">{{products.length}} resultados de la búsqueda <span class="bold">"{{qOriginal}}"</span>:</div>
+            <div class="cards-container products">
+            {{#each products}}
+                <div class="product effect-ruby" onclick="openModal(&quot;{{this.category}}&quot;,&quot;{{this.imagePath}}&quot;,&quot;{{this.doble}}&quot;,&quot;{{this.url2}}&quot;)">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F{{this.category}}%2F{{this.imagePath}}?alt=media" class="image-product"/>
+                    <p class="name-product">{{this.title}}</p> 
+                    <div class="price">{{this.price}}</div> 
+                </div>
+            {{/each}}
+            </div>
+        {{/checklength}}
+    </div>
+</section>
+<div id="modal" class="modal">
+    <span id="previous" class="previous control" style="display: none;"><i class="fas fa-arrow-circle-left"></i></span>
+    <span id="frente" style="display: none;">Frente</span>
+    <span id="next" class="next control" style="display: none;"><i class="fas fa-arrow-circle-right"></i></span>
+    <span id="reverso" style="display: none;">Reverso</span>
+    <span id="close" class="close" onclick="closeModal(&quot;{{@root.data.identifier}}&quot;)"><i class="fas fa-times-circle"></i> </span>
+    <div class="image-modal-container">
+        <input type="checkbox" id="zoomCheck">
+        <label for="zoomCheck">
+            <img id="imagen-modal">
+        </label>
+    </div>
+</div>
+<script>
+    menuBuscador=document.getElementById("menu-buscador")
+    menuBuscadorPhone=document.getElementById("menu-buscador-phone")
+    if (navigator.userAgent.match(/Mobile/)){
+        menuBuscador.style.display = "none"
+        menuBuscadorPhone.style.display = "block"
+    }
+
+    if (!navigator.userAgent.match(/Mobile/)){
+        menuBuscador.style.display = "none"
+    }
+
+    var isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1; //&& ua.indexOf("mobile");
+    if(isAndroid) {
+        document.write('<meta name="viewport" content="width=device-width,height='+window.innerHeight+', initial-scale=1.0">');
+    }
+
+    let Loading = (loadingDelayHidden = 0) => {
+        let loading = null;
+        const myLoadingDelayHidden = loadingDelayHidden;// Retardo para borrar
+        let imgs = [];// Imágenes
+        let lenImgs = 0, counterImgsLoading = 0;
+
+        function incrementCounterImgs() {
+            counterImgsLoading += 1;
+            if (counterImgsLoading === lenImgs-1) hideLoading();
+        }
+
+        function hideLoading() {
+            if(loading !== null) {
+                loading.classList.remove('show');
+                setTimeout(function () {
+                    loading.remove();
+                }, myLoadingDelayHidden);
+            }
+        }
+
+        function init() {
+            setTimeout(function(){ hideLoading() }, 2500);
+            document.addEventListener('DOMContentLoaded', function () {
+                loading = document.querySelector('.loading');
+                imgs = Array.from(document.images);
+                lenImgs = imgs.length;
+                if(imgs.length === 0) hideLoading();
+                else imgs.forEach(function (img) {
+                        img.addEventListener('load', incrementCounterImgs, false);
+                    });
+            });
+        }
+        return { 'init': init }
+    }
+
+    Loading(500).init();
+
+    let imageModal = document.getElementById("imagen-modal");
+
+    openModal = (category,imagePath,doble,secondImagePath) => {
+        if (navigator.userAgent.match(/Mobile/)){
+            let checkboxZoom = document.getElementById("zoomCheck")
+            checkboxZoom.disabled = true;
+        }
+        
+        let imageModalContainer=document.getElementsByClassName("image-modal-container")[0], modalImg = document.getElementById("imagen-modal");
+        let previous = document.getElementById("previous"),frente = document.getElementById("frente"),reverso = document.getElementById("reverso"),next = document.getElementById("next")
+        modal.style.display = "block";
+        modalImg.src = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F"+category+"%2F"+imagePath+"?alt=media"
+
+        if(doble === "true"){ //only if the product has two images
+            next.style.display="block";
+            reverso.style.display="block";
+            next.onclick =()=> toggle(imagePath,secondImagePath)
+            previous.onclick =()=> toggle(imagePath,secondImagePath)
+        }
+
+        else { 
+            previous.style.display="none";
+            next.style.display="none"
+        }
+            
+        toggle = (image1, image2) => {
+            let imageOne = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F"+category+"%2F"+image1+"?alt=media"
+            let imageTwo = "https://firebasestorage.googleapis.com/v0/b/bonnito-mx.appspot.com/o/categories%2F"+category+"%2F"+image2+"?alt=media"
+            modalImg.src === imageOne ? (
+                modalImg.src = imageTwo,
+                next.style.display="none",
+                reverso.style.display="none",
+                previous.style.display="block",
+                frente.style.display="block")
+            : (modalImg.src = imageOne,
+                next.style.display="block",
+                reverso.style.display="block",
+                previous.style.display="none",
+                frente.style.display="none")
+        }
+    }
+
+    closeModal = () => {
+        next.style.display="none"
+        reverso.style.display="none"
+        previous.style.display="none"
+        frente.style.display="none" 
+        imageModal.src="";
+        modal.style.display = "none";
+        let checkboxZoom = document.getElementById("zoomCheck")
+        checkboxZoom.checked = false;
+    }
+
+    if(modal){
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    }
+
+    hamburguer = document.getElementById("hamburguer");
+    hamburguer.onclick = function(){
+        let menu = document.getElementById("menu");
+        hamburguer.classList.toggle("change");
+        if (menu.style.width === "0" || menu.style.width === ""|| menu.style.width === "0px") {
+            menu.style.width = "200px";
+            hamburguer.style.position = "fixed"
+        } 
+        else if(menu.style.width = "200px"){
+            menu.style.width = "0";
+            hamburguer.style.position = "absolute"
+        }
+    }
+
+    header = document.getElementById("menu");
+    sticky = header.offsetTop;
+
+    fixHeader = ()=> {
+        if (window.outerWidth && window.outerWidth < 577) return
+        else{
+            if (window.pageYOffset > sticky) header.classList.add("sticky");
+            else header.classList.remove("sticky");
+        }
+    }
+    window.onscroll = ()=> fixHeader()
+</script>

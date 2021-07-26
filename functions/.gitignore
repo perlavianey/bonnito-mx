@@ -1,0 +1,8 @@
+node_modules/
+functions/bonnito-mx-firebase-adminsdk-sgjsy-27ca9c055a.json
+functions/firebase.json
+.firebaserc
+bonito-mx-export.json
+database.rules.jsonfirebase.json
+firebase.json
+storage-rules
